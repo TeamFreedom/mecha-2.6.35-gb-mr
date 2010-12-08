@@ -556,8 +556,18 @@ struct rq {
 
 static DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 
+static inline
+void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)
+{
+    rq->curr->sched_class->check_preempt_curr(rq, p, flags);
 
-static void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags);
+	/*
+	 * A queue event has occurred, and we're going to schedule.  In
+	 * this case, we can save a useless back to back clock update.
+	 */
+	if (rq->curr->se.on_rq && test_tsk_need_resched(rq->curr))
+		rq->skip_clock_update = 1;
+}
 
 static inline int cpu_of(struct rq *rq)
 {
@@ -1976,31 +1986,6 @@ static inline void check_class_changed(struct rq *rq, struct task_struct *p,
 		p->sched_class->switched_to(rq, p, running);
 	} else
 		p->sched_class->prio_changed(rq, p, oldprio, running);
-}
-
-static void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)
-{
-	const struct sched_class *class;
-
-	if (p->sched_class == rq->curr->sched_class) {
-		rq->curr->sched_class->check_preempt_curr(rq, p, flags);
-	} else {
-		for_each_class(class) {
-			if (class == rq->curr->sched_class)
-				break;
-			if (class == p->sched_class) {
-				resched_task(rq->curr);
-				break;
-			}
-		}
-	}
-
-	/*
-	 * A queue event has occurred, and we're going to schedule.  In
-	 * this case, we can save a useless back to back clock update.
-	 */
-	if (test_tsk_need_resched(rq->curr))
-		rq->skip_clock_update = 1;
 }
 
 #ifdef CONFIG_SMP
@@ -3716,7 +3701,6 @@ static void put_prev_task(struct rq *rq, struct task_struct *prev)
 {
 	if (prev->se.on_rq)
 		update_rq_clock(rq);
-	rq->skip_clock_update = 0;
 	prev->sched_class->put_prev_task(rq, prev);
 }
 
@@ -3775,7 +3759,6 @@ need_resched_nonpreemptible:
 		hrtick_clear(rq);
 
 	raw_spin_lock_irq(&rq->lock);
-	clear_tsk_need_resched(prev);
 
 	if (prev->state && !(preempt_count() & PREEMPT_ACTIVE)) {
 		if (unlikely(signal_pending_state(prev->state, prev)))
@@ -3792,6 +3775,8 @@ need_resched_nonpreemptible:
 
 	put_prev_task(rq, prev);
 	next = pick_next_task(rq);
+	clear_tsk_need_resched(prev);
+	rq->skip_clock_update = 0;
 
 	if (likely(prev != next)) {
 		sched_info_switch(prev, next);
