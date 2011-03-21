@@ -685,7 +685,8 @@ static int ashmem_flush_cache_range(struct ashmem_area *asma)
 		result =  -EINVAL;
 		goto done;
 	}
-	clean_caches( addr, size, 0);
+
+	flush_cache_user_range(addr, addr + size);
 #ifdef CONFIG_OUTER_CACHE
 	for (end = addr; end < (addr + size); end += PAGE_SIZE) {
 		unsigned long physaddr;
@@ -695,14 +696,7 @@ static int ashmem_flush_cache_range(struct ashmem_area *asma)
 			goto done;
 		}
 
-		switch (cmd) {
-		case ASHMEM_CACHE_FLUSH_RANGE:
-			outer_flush_range(physaddr, physaddr + PAGE_SIZE);
-			break;
-		case ASHMEM_CACHE_CLEAN_RANGE:
-			outer_clean_range(physaddr, physaddr + PAGE_SIZE);
-			break;
-		}
+		outer_flush_range(physaddr, physaddr + PAGE_SIZE);
 	}
 	mb();
 #endif
