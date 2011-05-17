@@ -613,7 +613,7 @@ static long htc_diag_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 	break;
 	case USB_DIAG_FUNC_IOC_ENABLE_GET:
 
-		tmp_value = !_context.function.hidden;
+		tmp_value = !_context.function.disabled;
 
 		if (copy_to_user(argp, &tmp_value, sizeof(tmp_value)))
 			return -EFAULT;
@@ -1945,7 +1945,7 @@ static int diag_function_set_alt(struct usb_function *f,
 	if (dev == legacyctxt) {
 		while ((req = req_get(dev, &dev->rx_req_user)))
 			req_put(dev, &dev->rx_req_idle, req);
-		dev->online = !dev->function.hidden;
+		dev->online = !dev->function.disabled;
 		wake_up(&dev->read_wq);
 	}
 #endif
@@ -2132,7 +2132,7 @@ int diag_function_add(struct usb_configuration *c)
 	INIT_LIST_HEAD(&dev->write_pool);
 	INIT_WORK(&dev->config_work, usb_config_work_func);
 
-	dev->function.hidden = !_context.function_enable;
+	dev->function.disabled = !_context.function_enable;
 
 #if defined(CONFIG_MACH_MECHA)
 	/*for internal hub*/
@@ -2155,7 +2155,7 @@ int diag_function_add(struct usb_configuration *c)
 		mutex_init(&dev->diag2arm9_write_lock);
 	}
 #endif
-DIAG_DBUG("%s: dev->function.hidden =%d\n", __func__, dev->function.hidden );
+DIAG_DBUG("%s: dev->function.disabled =%d\n", __func__, dev->function.disabled );
 	ret = usb_add_function(c, &dev->function);
 	if (ret) {
 		INFO(c->cdev, "usb_add_function failed\n");
@@ -2339,7 +2339,7 @@ static int diag_set_enabled(const char *val, struct kernel_param *kp)
 
 static int diag_get_enabled(char *buffer, struct kernel_param *kp)
 {
-	buffer[0] = '0' + !_context.function.hidden;
+	buffer[0] = '0' + !_context.function.disabled;
 	return 1;
 }
 module_param_call(enabled, diag_set_enabled, diag_get_enabled, NULL, 0664);
