@@ -91,6 +91,19 @@ struct clkctl_acpu_speed {
 static struct clock_state drv_state = { 0 };
 
 static struct cpufreq_frequency_table freq_table[] = {
+#ifdef CONFIG_ACPUCLOCK_OVERCLOCKING
+    { 0, 245760 },
+    { 1, 368640 },
+    { 2, 768000 },
+    { 3, 806400 },
+    { 4, 1113600 },
+    { 5, 1209600 },
+    { 6, 1305600 },
+    { 7, 1401600 },
+    { 8, 1497600 },
+    { 9, 1516800 },
+	{ 10, CPUFREQ_TABLE_END },
+#else
 	{ 0, 245760 },
 	{ 1, 368640 },
 	{ 2, 768000 },
@@ -100,12 +113,33 @@ static struct cpufreq_frequency_table freq_table[] = {
 #else
 	{ 3, CPUFREQ_TABLE_END },
 #endif
+#endif
 };
 
 /* Use negative numbers for sources that can't be enabled/disabled */
 #define SRC_LPXO (-2)
 #define SRC_AXI  (-1)
 static struct clkctl_acpu_speed acpu_freq_tbl[] = {
+#ifdef CONFIG_ACPUCLOCK_OVERCLOCKING
+    { 24576,  SRC_LPXO, 0, 0,  30720000,  900, VDD_RAW(850) },
+    { 61440,  PLL_3,    5, 11, 61440000,  900, VDD_RAW(900) },
+    { 122880, PLL_3,    5, 5,  61440000,  900, VDD_RAW(900) },
+    { 184320, PLL_3,    5, 4,  61440000,  900, VDD_RAW(900) },
+    { MAX_AXI_KHZ, SRC_AXI, 1, 0, 61440000, 900, VDD_RAW(900) },
+    { 245760, PLL_3,    5, 2,  61440000,  900, VDD_RAW(900) },
+    { 368640, PLL_3,    5, 1,  122800000, 900, VDD_RAW(900) },
+    { 768000, PLL_1,    2, 0,  153600000, 1050, VDD_RAW(1050) },
+    /* Make sure any freq based from PLL_2 is a multiple of 19200! 
+       Voltage tables are being very conservative and are not designed to
+       be an undervolt of any sort. */
+    { 806400, PLL_2,    3, 0,  192000000, 1100, VDD_RAW(1100) },
+    { 1113600, PLL_2,   3, 0,  192000000, 1200, VDD_RAW(1200) },
+    { 1209600, PLL_2,   3, 0,  192000000, 1200, VDD_RAW(1200) },
+    { 1305600, PLL_2,   3, 0,  192000000, 1200, VDD_RAW(1200) },
+    { 1401600, PLL_2,   3, 0,  192000000, 1300, VDD_RAW(1300) },
+    { 1497600, PLL_2,   3, 0,  192000000, 1300, VDD_RAW(1300) },
+    { 1516800, PLL_2,   3, 0,  192000000, 1300, VDD_RAW(1300) },
+#else
 	{ 24576,  SRC_LPXO, 0, 0,  30720000,  1000, VDD_RAW(1000) },
 	{ 61440,  PLL_3,    5, 11, 61440000,  1000, VDD_RAW(1000) },
 	{ 122880, PLL_3,    5, 5,  61440000,  1000, VDD_RAW(1000) },
@@ -119,6 +153,7 @@ static struct clkctl_acpu_speed acpu_freq_tbl[] = {
 	 * AXI @ 192MHz accomplishes this implicitly. 806.4MHz
 	 * is updated to 1024MHz at runtime for QSD8x55. */
 	{ 806400, PLL_2,    3, 0,  192000000, 1100, VDD_RAW(1100) },
+#endif
 #endif
 	{ 0 }
 };
@@ -210,6 +245,13 @@ static void acpuclk_set_src(const struct clkctl_acpu_speed *s)
 	reg_clkctl |= s->acpu_src_sel << (4 + 8 * src_sel);
 	reg_clkctl |= s->acpu_src_div << (0 + 8 * src_sel);
 	writel(reg_clkctl, SCSS_CLK_CTL_ADDR);
+
+#ifdef CONFIG_ACPUCLOCK_OVERCLOCKING
+        /* Program PLL2 L val for overclocked speeds. */
+        if(s->src == PLL_2) {
+                writel(s->acpu_clk_khz/19200, PLL2_L_VAL_ADDR);
+        }
+#endif
 
 	/* Toggle clock source. */
 	reg_clksel ^= 1;
@@ -520,8 +562,13 @@ void __init pll2_fixup(void)
 	u8 pll2_l;
 
 	pll2_l = readl(PLL2_L_VAL_ADDR) & 0xFF;
+#ifdef CONFIG_ACPUCLOCK_OVERCLOCKING
+	speed = &acpu_freq_tbl[8];
+	cpu_freq = &freq_table[3];
+#else
 	speed = &acpu_freq_tbl[ARRAY_SIZE(acpu_freq_tbl)-2];
 	cpu_freq = &freq_table[ARRAY_SIZE(freq_table)-2];
+#endif
 
 	if (speed->acpu_clk_khz != 806400 || cpu_freq->frequency != 806400) {
 		pr_err("Frequency table fixups for PLL2 rate failed.\n");
