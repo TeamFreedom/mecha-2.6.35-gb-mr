@@ -60,7 +60,7 @@ static unsigned int sleep_ideal_freq;
  * Zero disables and causes to always jump straight to max frequency.
  * When below the ideal freqeuncy we always ramp up to the ideal freq.
  */
-#define DEFAULT_RAMP_UP_STEP 256000
+#define DEFAULT_RAMP_UP_STEP 480000
 static unsigned int ramp_up_step;
 
 /*
@@ -167,7 +167,7 @@ static
 struct cpufreq_governor cpufreq_gov_smartass2 = {
 	.name = "smartassV2",
 	.governor = cpufreq_governor_smartass,
-	.max_transition_latency = 9000000,
+	.max_transition_latency = 8000000,
 	.owner = THIS_MODULE,
 };
 

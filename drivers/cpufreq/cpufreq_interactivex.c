@@ -63,8 +63,8 @@ static unsigned int samples = 0;
 #define DEFAULT_MIN_SAMPLE_TIME 50000;
 static unsigned long min_sample_time;
 
-static unsigned int freq_threshold = 1800000;
-static unsigned int resume_speed = 1400000;
+static unsigned int freq_threshold = 1401600;
+static unsigned int resume_speed = 1113600;
 
 static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 		unsigned int event);
@@ -75,7 +75,7 @@ static
 struct cpufreq_governor cpufreq_gov_interactive = {
 	.name = "interactiveX",
 	.governor = cpufreq_governor_interactive,
-	.max_transition_latency = 10000000,
+	.max_transition_latency = 8000000,
 	.owner = THIS_MODULE,
 };
 
