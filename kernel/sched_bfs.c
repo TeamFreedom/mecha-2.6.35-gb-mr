@@ -134,7 +134,7 @@ int rr_interval __read_mostly = 6;
  * are allowed to run five seconds as real time tasks. This is the total over
  * all online cpus.
  */
-int sched_iso_cpu __read_mostly = 70;
+int sched_iso_cpu __read_mostly = 25;
 
 /*
  * The relative length of deadline for each priority(nice) level.
