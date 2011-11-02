@@ -19,3 +19,4 @@ obj-$(CONFIG_BCM4329) += bcm4329.o
 bcm4329-objs += $(DHDOFILES)
 EXTRA_CFLAGS = $(DHDCFLAGS)
 EXTRA_LDFLAGS += --strip-debug
+KBUILD_CFLAGS += -Wno-error=array-bounds
