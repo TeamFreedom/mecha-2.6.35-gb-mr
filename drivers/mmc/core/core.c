@@ -291,7 +291,7 @@ void mmc_wait_for_req(struct mmc_host *host, struct mmc_request *mrq)
 #endif
 #endif
 #endif
-		wait_for_completion_io(&complete);
+		wait_for_completion(&complete);
 
 }
 
