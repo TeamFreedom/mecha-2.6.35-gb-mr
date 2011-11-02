@@ -189,6 +189,12 @@ config CPU_FREQ_GOV_INTERACTIVE
 	  'interactive' - This driver adds a dynamic cpufreq policy governor
 	  designed for latency-sensitive workloads.
 
+config CPU_FREQ_GOV_INTERACTIVEX
+    tristate "'interactiveX' cpufreq policy governor"
+    help
+      'interactiveX' - Interactive governor above modified by
+      imoseyon to support suspend frequency setting.
+
 config CPU_FREQ_GOV_SMARTASS2
 	tristate "'smartassV2' cpufreq governor"
 	depends on CPU_FREQ
