@@ -1,0 +1,13 @@
+*.o
+*.cmd
+*.ko
+*.a
+out/Zoom-Kernel/boot.img
+out/Zoom-Kernel/boot.img-ramdisk.cpio.gz
+out/Zoom-Kernel/*.zip
+.config
+.config.old
+.version
+Module.symvers
+
+
