@@ -5,9 +5,21 @@
 out/Zoom-Kernel/boot.img
 out/Zoom-Kernel/boot.img-ramdisk.cpio.gz
 out/Zoom-Kernel/*.zip
+tools/toolchain/lib/gcc/arm-eabi/4.6.2/*.o
+tools/toolchain/lib/gcc/arm-eabi/4.6.2/fpu/*.o
+tools/toolchain/lib/gcc/arm-eabi/4.6.2/fpu/*.a
+tools/toolchain/lib/gcc/arm-eabi/4.6.2/thumb/*.o
+tools/toolchain/lib/gcc/arm-eabi/4.6.2/thumb/*.a
+tools/toolchain/lib/*.a
 .config
 .config.old
 .version
 Module.symvers
+include/config/
+include/generated/
+include/linux/version.h
+out/
+
+
 
 
