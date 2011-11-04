@@ -1,0 +1,13 @@
+show_progress(0.500000, 0);
+ui_print("Zoom.....");
+run_program("/sbin/mount", "/dev/block/mmcblk0p25", "/system");
+ui_print("Installing Kernel...");
+ package_extract_file("boot.img", "/dev/block/mmcblk0p22");
+ui_print("Installing modules...");
+package_extract_dir("system", "/system");
+ui_print("Installation complete...");
+show_progress(0.1, 10);
+show_progress(0.2, 0);
+show_progress(0.2, 10);
+unmount("/system");
+
