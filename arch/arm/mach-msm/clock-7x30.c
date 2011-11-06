@@ -243,6 +243,7 @@ static struct clk_freq_tbl clk_tbl_mdp_lcdc[] = {
 	F_MND16(24576000, SRC_LPXO, 1,   0,   0, NOMINAL),
 	F_MND16(30720000, SRC_PLL3, 4,   1,   6, NOMINAL),
 	F_MND16(40960000, SRC_PLL3, 2,   1,   9, NOMINAL),
+    F_MND16(73728000, SRC_PLL3, 2,   1,   5, NOMINAL),
 	F_END,
 };
 
@@ -302,6 +303,7 @@ static struct clk_freq_tbl clk_tbl_vfe_jpeg[] = {
 	F_MND16(122880000, SRC_PLL3, 2,   1,   3, NOMINAL),
 	F_MND16(147456000, SRC_PLL3, 2,   2,   5, NOMINAL),
 	F_MND16(153600000, SRC_PLL1, 2,   2,   5, NOMINAL),
+    F_MND16(192000000, SRC_PLL1, 4,   0,   0, HIGH),
 	F_END,
 };
 
