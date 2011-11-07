@@ -5,7 +5,7 @@ PRODUCT_CONFIG_FILE=mecha-lte_defconfig
 RAMDISK_FILES=ramdisk
 MKRAMDISK=$T/tools/update-zip-tools/mkbootfs
 MKBOOTIMG=$T/tools/update-zip-tools/mkbootimg
-VERSION=1.0.2
+VERSION=1.0.3
 DATE=$(date +%Y-%m-%d)
 
 echo " === Cleaning up ==="
