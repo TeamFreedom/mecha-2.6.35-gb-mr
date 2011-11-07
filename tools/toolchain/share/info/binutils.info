@@ -1,5 +1,5 @@
 This is binutils.info, produced by makeinfo version 4.13 from
-/mnt/jenkins/workspace/linaro-android_toolchain-4.6-2011.10/build/objdir/../build/../binutils/binutils-2.21.53.0.2/binutils/doc/binutils.texi.
+/mnt/jenkins/workspace/linaro-android_toolchain-4.5-bzr/build/objdir/../build/../binutils/binutils-2.21.53.0.2/binutils/doc/binutils.texi.
 
 Copyright (C) 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
@@ -4692,35 +4692,35 @@ Binutils Index
 
 
 Tag Table:
-Node: Top2137
-Node: ar3860
-Node: ar cmdline6686
-Node: ar scripts16420
-Node: nm22108
-Node: objcopy31705
-Node: objdump61379
-Node: ranlib83393
-Node: size84214
-Node: strings87219
-Node: strip89677
-Node: c++filt95628
-Ref: c++filt-Footnote-1100475
-Node: addr2line100581
-Node: nlmconv104381
-Node: windmc106987
-Node: windres110636
-Node: dlltool116997
-Node: def file format129883
-Node: readelf131814
-Node: elfedit139359
-Node: Common Options141604
-Node: Selecting the Target System142644
-Node: Target Selection143576
-Node: Architecture Selection145558
-Node: Reporting Bugs146386
-Node: Bug Criteria147165
-Node: Bug Reporting147718
-Node: GNU Free Documentation License154619
-Node: Binutils Index179798
+Node: Top2133
+Node: ar3856
+Node: ar cmdline6682
+Node: ar scripts16416
+Node: nm22104
+Node: objcopy31701
+Node: objdump61375
+Node: ranlib83389
+Node: size84210
+Node: strings87215
+Node: strip89673
+Node: c++filt95624
+Ref: c++filt-Footnote-1100471
+Node: addr2line100577
+Node: nlmconv104377
+Node: windmc106983
+Node: windres110632
+Node: dlltool116993
+Node: def file format129879
+Node: readelf131810
+Node: elfedit139355
+Node: Common Options141600
+Node: Selecting the Target System142640
+Node: Target Selection143572
+Node: Architecture Selection145554
+Node: Reporting Bugs146382
+Node: Bug Criteria147161
+Node: Bug Reporting147714
+Node: GNU Free Documentation License154615
+Node: Binutils Index179794
 
 End Tag Table
